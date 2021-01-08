@@ -2,20 +2,20 @@
 % Please edit documentation in R/rMPG_nu_Half.R
 \name{rMPG_nu_Half}
 \alias{rMPG_nu_Half}
-\title{rMPG_nu_Half(alpha) generates random sample from the Modified Ploya Gamma distribution}
+\title{rMPG_nu_Half(alpha) generates random sample from the Modified Ploya Gamma distribution.}
 \usage{
 rMPG_nu_Half(n = 1, alpha)
 }
 \arguments{
-\item{n:}{number of samples to be generated.}
+\item{n:}{Number of samples to be generated.}
 
-\item{alpha:}{The parameter of the distribution, a positive number}
+\item{alpha:}{The parameter of the distribution, a positive number.}
 }
 \value{
-The sample from the MPG(nu=.5, \code{alpha}) dostribution/
+The sample from the MPG(nu=.5, \code{alpha}) dostribution.
 }
 \description{
-rMPG_nu_Half(alpha) generates random sample from the Modified Ploya Gamma distribution
+rMPG_nu_Half(alpha) generates random sample from the Modified Ploya Gamma distribution.
 }
 \examples{
 rMPG_nu_Half(10,1)

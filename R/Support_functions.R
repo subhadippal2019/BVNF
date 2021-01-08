@@ -13,6 +13,21 @@ log_Bessel_K<-function(x, nu){ return( log(BesselK(x,nu =nu, expon.scaled = TRUE
 
 
 
+#Norm<-function(x){  sqrt(sum(x^2)) }
+
+
+
+KAPPA_INITIAL<-function(Y){
+  Y_bar=apply(Y,2,'mean');n=dim(Y)[1]
+  nu=length(Y_bar)/2-1;
+
+  const_a= Norm(Y_bar);
+  #kappa_lower_1= (nu+.5)*const_a/(1-const_a)
+  kappa_lower= 2*(nu+.5)*const_a/(1-const_a^2) # Segura 2011 bound
+  #kappa_upper=(nu+1)*const_a/(1-const_a)
+  return(kappa_lower)
+}
+
 
 
 

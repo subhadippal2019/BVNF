@@ -1,14 +1,4 @@
 
-#################################
-library(gsl)
-library(Bessel)
-library(ghyp)
-
-###############################################################################################################
-###############################################################################################################
-
-
-
 
 #' rMPG_nu_Half(alpha) generates random sample from the Modified Ploya Gamma distribution.
 #' @param n: Number of samples to be generated.
