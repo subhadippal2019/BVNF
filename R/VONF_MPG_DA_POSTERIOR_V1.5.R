@@ -107,7 +107,7 @@ VONF_pD_MPG_INVCDF_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000,
 #' @export
 
 
-VONF_3D_MPG_ES_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000, K=100){
+VONF_3D_MPG_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000, K=100){
   #K is the number of terms for  calculating CDF
   Start_Time=Sys.time()
   if(is.null(kappa_start)){(kappa_start=KAPPA_INITIAL(Y))}
