@@ -6,8 +6,23 @@
 ##############################################################################################################
 ##############################################################################################################
 
+
+#' Fits a Data Augmentation algorithm for Vonmises Distribution in 3 dimensions.
+#'   Generates MCMC samples from Posterior of mode and concentration parameter.
+#'
+#' @param Y:  n \times 3 matrix containing n directional data of dimension d.
+#' norm of each row of the matrix Y is 1.
+#' @param kappa_start: A positive number, starting value for the MCMC algorithm.
+#' If set NUll the Default procedure to get the initial value will be used.
+#' @param MCSamplerSize: Number of MCMC samples required to be generated.
+#' @return MCMC samples from for  Posterior of mode and concentration parameter of Vonmises distribution.
+#' @examples
+#' library(Rfast)
+#' library(benchmarkme)
+#' data = rvmf(n =10, mu=c(1,0,0),k = 10)
+#' MC_OBject = VONF_pD_MPG_INVCDF_DA_POSTERIOR( Y=data, MCSamplerSize=50 )
 #' @export
-VONF_3D_GEO_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000){
+VONF_3D_GEO_DA_POSTERIOR<-function(Y,MCSamplerSize=100, kappa_start=NULL){
   # Initially this function was called VONF_GEO_DA_Mu_kappa_post_sampler
   #browser()
   start_time=Sys.time()
@@ -60,7 +75,7 @@ VONF_3D_GEO_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000){
            Run_Time=Run_Time,
            System_info=Sys_info,
            call=match.call(),
-           function_def=function_def)
+           function_def=(function_def))
   return(lst)
 }# End funtion
 
@@ -81,7 +96,7 @@ VONF_3D_GEO_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000){
 #########################################################################################
 #########################################################################################
 
-
+#' @export
 VONF_3D_GEOGIG_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000 ){
   #kappa_start=20
   start_time=Sys.time()
