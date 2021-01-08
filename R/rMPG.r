@@ -19,12 +19,12 @@
 #' data=rMPG(n=1000, alpha=5, nu=0)
 #' #' data=rMPG(n=1000, alpha=50, nu=0)
 #' @export
-rMPG<-function(n=1, alpha,nu,Num_of_Terms=200){
+rMPG<-function(n=1, alpha,nu,Num_of_Terms=200, eps_accuracy=.00001){
   K=Num_of_Terms
   j_nu_0=bessel_zero_Jnu(nu,1:K);
   J_nuPlus1=besselJ(j_nu_0,(nu+1));
   if(alpha<40){
-      val=replicate(n = n,expr =  PG_randomSample(a=alpha,nu=nu,K=K,j_nu_0=j_nu_0, J_nuPlus1=J_nuPlus1))
+      val=replicate(n = n,expr =  PG_randomSample(a=alpha,nu=nu,K=K,j_nu_0=j_nu_0, J_nuPlus1=J_nuPlus1, eps_accuracy = eps_accuracy))
   }
   if(alpha>=40){
     val=replicate(n = n,rgig(n=n, lambda = -nu-1, chi = .5, psi = 2*alpha^2))
@@ -241,10 +241,10 @@ t_start<-function(u,a,nu,j_nu_0_1,J_nuPlus1_1){
 ################################################################################
 ################################################################################
 
-PG_randomSample<-function(a,nu,K=200,j_nu_0=NULL, J_nuPlus1=NULL){
+PG_randomSample<-function(a,nu,K=200,j_nu_0=NULL, J_nuPlus1=NULL, eps_accuracy=.00001){
   #Generates a Sample from the appropriate distribution.
    #K=200;
-  Total_NR_steps=30;
+  Total_NR_steps=50;
   u=runif(1)
   val_iter=1;t=.01
   ################################################
@@ -271,7 +271,7 @@ PG_randomSample<-function(a,nu,K=200,j_nu_0=NULL, J_nuPlus1=NULL){
      # t=round(t,10)
       val_iter[NR_steps+1]=t
       #print(t)
-       if( abs(t-val_iter[NR_steps])<.0001){STOP_FLAG=0}
+       if( abs(t-val_iter[NR_steps])<eps_accuracy){STOP_FLAG=0}
         NR_steps=NR_steps+1;
   }
   return(t)

@@ -4,7 +4,7 @@
 \alias{rMPG}
 \title{Generates samples from Modfified Ploya Gamma (MPG) distribution.}
 \usage{
-rMPG(n = 1, alpha, nu, Num_of_Terms = 200)
+rMPG(n = 1, alpha, nu, Num_of_Terms = 200, eps_accuracy = 1e-05)
 }
 \arguments{
 \item{n:}{Number of samples to be generated.}

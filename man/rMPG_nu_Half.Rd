@@ -18,6 +18,7 @@ The sample from the MPG(nu=.5, \code{alpha}) dostribution.
 rMPG_nu_Half(alpha) generates random sample from the Modified Ploya Gamma distribution.
 }
 \examples{
+library(ghyp)
 rMPG_nu_Half(10,1)
 rMPG_nu_Half(200,100)
 rMPG_nu_Half(5,10000)

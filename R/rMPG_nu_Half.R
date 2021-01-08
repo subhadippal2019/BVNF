@@ -5,6 +5,7 @@
 #' @param alpha: The parameter of the distribution, a positive number.
 #' @return The sample from the MPG(nu=.5, \code{alpha}) dostribution.
 #' @examples
+#' library(ghyp)
 #' rMPG_nu_Half(10,1)
 #' rMPG_nu_Half(200,100)
 #' rMPG_nu_Half(5,10000)
@@ -45,7 +46,8 @@ rMPG_nu_Half<-function(n=1, alpha){
               #############################################################################
               #############################################################################
         }
-
+  #dummy_var=matrix(rep(1, n), ncol=1)
+  #val=apply(dummy_var, MARGIN = 1, FUN =function(x){return(rMPG_nu_Half_single(alpha))} )
   val=replicate(n = n , rMPG_nu_Half_single(alpha))
   return(val)
 } # End of functrion
@@ -150,6 +152,8 @@ log_ch_a_n<-function(n=0,t, alpha){
 
 ##########################################################################################
 ##########################################################################################
+
+#' @export
 sample_truncated_Exp<-function(n, alpha){
   t_star=0.1005082; exp_rate=pi^2+alpha^2
   #val=t_star+rexp(n=n, rate =pi^2+alpha^2 )
