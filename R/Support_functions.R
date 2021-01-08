@@ -13,15 +13,24 @@ log_Bessel_K<-function(x, nu){ return( log(BesselK(x,nu =nu, expon.scaled = TRUE
 
 
 
-#Norm<-function(x){  sqrt(sum(x^2)) }
+norm_vec<-function(x){  sqrt(sum(x^2)) }
 
 
-
+#' Calculates initial value of KAPPA_INITIAL(Y). Approximate posterior mode.
+#'
+#' @param Y:  n\times d  matrix containing n directional data of dimension d.
+#' norm of each row of the matrix Y is 1.
+#' @return Approximate posterior mode for the concentration parameter.
+#' @examples
+#' library(Rfast)
+#' Y=rvmf(n =10, mu=c(1,0,0),k = 10)
+#' KAPPA_INITIAL(Y)
+#' @export
 KAPPA_INITIAL<-function(Y){
   Y_bar=apply(Y,2,'mean');n=dim(Y)[1]
   nu=length(Y_bar)/2-1;
 
-  const_a= Norm(Y_bar);
+  const_a= norm_vec(Y_bar);
   #kappa_lower_1= (nu+.5)*const_a/(1-const_a)
   kappa_lower= 2*(nu+.5)*const_a/(1-const_a^2) # Segura 2011 bound
   #kappa_upper=(nu+1)*const_a/(1-const_a)

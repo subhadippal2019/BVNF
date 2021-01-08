@@ -6,15 +6,67 @@
 ###########################################################################
 
 
+#' Generates samples from Modfified Ploya Gamma (MPG) distribution.
+#'
+#' @param n:  Number of samples to be generated.
+#' @param alpha: A positive real number.
+#' @param nu: A positive real number, order of the MPG distribution.
+#' @param Num_of_Terms: Integer greater than 50.
+#'  Number of Terms added in the series represantion of the density.
+#' @return Samples from the MPG(n, alpha, nu) distribution.
+#' @examples
+#' library(Bessel)
+#' data=rMPG(n=1000, alpha=5, nu=0)
+#' #' data=rMPG(n=1000, alpha=50, nu=0)
+#' @export
+rMPG<-function(n=1, alpha,nu,Num_of_Terms=200){
+  K=Num_of_Terms
+  j_nu_0=bessel_zero_Jnu(nu,1:K);
+  J_nuPlus1=besselJ(j_nu_0,(nu+1));
+  if(alpha<40){
+      val=replicate(n = n,expr =  PG_randomSample(a=alpha,nu=nu,K=K,j_nu_0=j_nu_0, J_nuPlus1=J_nuPlus1))
+  }
+  if(alpha>=40){
+    val=replicate(n = n,rgig(n=n, lambda = -nu-1, chi = .5, psi = 2*alpha^2))
+  }
+  return(val)
+}
 
 
 
-###########################################################################
-###########################################################################
-############################# Technical Functions ##########################
-###########################################################################
 
-#library(gsl)
+
+#' computes the density frunction for the Modfified Ploya Gamma (MPG) distribution.
+#'
+#' @param x:  A positive real number or a vector of real numbers. The value at which the density to be calculated.
+#' @param alpha: A positive real number.
+#' @param nu: A positive real number, order of the MPG distribution.
+#' @param Num_of_Terms: Integer greater than 50.
+#'  Number of Terms added in the series represantion of the density.
+#' @return Density of the MPG(alpha, nu) evaluated at x
+#' @examples
+#' library(Bessel)
+#' dMPG(.05, alpha=5, nu=0)
+#' dMPG(c(.01, .05,.1) , alpha=5, nu=0)
+#' plot(function(x){dMPG(x, alpha=5, nu=0, iflog = FALSE)}, xlim=c(.005, .2))
+#' @export
+dMPG<-function(x,alpha,nu,iflog=FALSE, Num_of_Terms=200){
+
+  K=Num_of_Terms
+  x=x*(x>.0001)+.0001*(x<=.0001)
+  j_nu_0=bessel_zero_Jnu(nu,1:K);
+  J_nuPlus1=besselJ(j_nu_0,(nu+1));
+  dMPG_single<-function(t1, a, nu, iflog=iflog){
+    return(log_f_nu(t=t1,a=a,nu=nu,j_nu_0=j_nu_0,J_nuPlus1=J_nuPlus1,iflog=iflog))
+  }
+  val=apply(matrix(x, ncol=1), MARGIN = 1, FUN = function(xvec){dMPG_single(xvec,a=alpha, nu=nu, iflog=iflog )})
+  # Need to incorporate the gig approximaton
+  return(val)
+}
+
+#########################
+
+
 
   AllTerms_CDF_log<-function(t,a,nu,j_nu_0,J_nuPlus1){
           #j_nu_0=bessel_zero_Jnu(nu,1:K)
@@ -86,11 +138,12 @@
 
 #To Show the convergence for the new method for computing term by term log CDF
 #library(ggplot2)
+
 t_conv_log_CDF_plot<-function(t,a,nu,K,iflog=TRUE){
   #shows the term profiles of the CDF
   j_nu_0=bessel_zero_Jnu(nu,1:K); J_nuPlus1=besselJ(j_nu_0,(nu+1));
   Terms=AllTerms_CDF_log(t, a, nu,j_nu_0,J_nuPlus1);Max=max(Terms); Terms_adj=Terms-Max
-  browser()
+  #browser()
    sign_of_Terms= sign(J_nuPlus1);
 
   cumSum=cumsum(exp(Terms_adj)*sign_of_Terms)
@@ -140,18 +193,7 @@ All_DensityTerms_nu_log<-function(t,a,nu,j_nu_0,J_nuPlus1){
 ########################################################################
 ############################################################################
 
-dMPG<-function(t,a,nu,iflog=TRUE, NumofTerms=200){
-  K=NumofTerms
-  t=t*(t>.0001)+.0001*(t<=.0001)
-  j_nu_0=bessel_zero_Jnu(nu,1:K);
-  J_nuPlus1=besselJ(j_nu_0,(nu+1));
-  dMPG_single<-function(t1, a, nu, iflog=iflog){
-    return(log_f_nu(t=t1,a=a,nu=nu,j_nu_0=j_nu_0,J_nuPlus1=J_nuPlus1,iflog=iflog))
-  }
-  val=apply(matrix(t, ncol=1), MARGIN = 1, FUN = function(xvec){dMPG_single(xvec,a=a, nu=nu, iflog=iflog )})
 
-  return(val)
-}
 
 log_f_nu<-function(t,a,nu,j_nu_0,J_nuPlus1,iflog=TRUE){
   K=length(j_nu_0);
