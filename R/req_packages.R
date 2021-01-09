@@ -1,4 +1,6 @@
 
+#' @export
+load_packages<-function(){
 #################################
 library(gsl)
 library(Bessel)
@@ -18,5 +20,6 @@ library(rgdal)
 library(grid)
 library(gridExtra)
 library(rayshader)
+}
 #library()
 #install.packages("multicore")
