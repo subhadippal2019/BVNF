@@ -33,7 +33,8 @@ dd=data
 #   rm(acf_value)
 # }
 #
-# browser()
+ #browser()
+ #eval(parse( text=paste0("data$",var_names[1])))
   var_names=names(data)
 p <- ggplot(data, aes(factor(lag), kappa_1))
 p <- p + geom_violin(aes(fill = "kappa=01"), alpha = 0.7, scale= scale_type)
