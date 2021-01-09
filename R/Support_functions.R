@@ -68,4 +68,18 @@ log_sinh<-function(x){
 
 
 
+inner_prod<-function(x,y){(sum(x*y))}
+#### Data Generation #####
+alt_besselI<-function(x, nu){
+  if(nu==0){
+    val=gsl::bessel_I0(x)
+  }
+  if(nu>0){
+    val=besselI(10,nu = nu)
+  }
+  return(val)
+}
+
+
+
 
