@@ -10,7 +10,7 @@
 #' Fits a Data Augmentation algorithm for Vonmises Distribution in 3 dimensions.
 #'   Generates MCMC samples from Posterior of mode and concentration parameter.
 #'
-#' @param Y:  n \times 3 matrix containing n directional data of dimension d.
+#' @param Y:  n X 3 matrix containing n directional data of dimension d.
 #' norm of each row of the matrix Y is 1.
 #' @param kappa_start: A positive number, starting value for the MCMC algorithm.
 #' If set NUll the Default procedure to get the initial value will be used.
@@ -32,8 +32,10 @@ VONF_3D_GEO_DA_POSTERIOR<-function(Y,MCSamplerSize=100, kappa_start=NULL){
   beta_prior_kappa=0;alpha_prior_kappa=1;
   #datasummary
   Y_bar=apply(Y,2,'mean');Y_SUM= apply(Y,2,'sum');n=dim(Y)[1]
-
-  #initialization
+      data_dim=length(Y_bar);
+      if(data_dim!=3){ print("This function is only applicable to 3 dimensional Directional data. The data currently provided
+                         is not 3 dimensional data. ");return(NULL)}
+      #initialization
   Z=replicate(n,-1); kappa=kappa_start;McSample_kappa=replicate(MCSamplerSize,-1);McSample_mu=replicate(MCSamplerSize,0*Y_bar)
 
   #Sampling loop
@@ -58,7 +60,7 @@ VONF_3D_GEO_DA_POSTERIOR<-function(Y,MCSamplerSize=100, kappa_start=NULL){
   } # End iter loop
 
             Run_Time= Sys.time()-start_time;
-            Sys_info=get_sys_details()
+            #Sys_info=get_sys_details()
             #########
             #browser()
             function_name=as.character(match.call()[1])
@@ -73,7 +75,7 @@ VONF_3D_GEO_DA_POSTERIOR<-function(Y,MCSamplerSize=100, kappa_start=NULL){
            Y=Y,
            Method="Geometric RV Augmentation: function:VONF_3D_GEO_DA_POSTERIOR",
            Run_Time=Run_Time,
-           System_info=Sys_info,
+           #System_info=Sys_info,
            call=match.call(),
            function_def=(function_def))
   return(lst)
@@ -135,7 +137,7 @@ VONF_3D_GEOGIG_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000 ){
     McSample_kappa[iter]=kappa;McSample_mu[,iter]=mu;
   } # End iter loop
   Run_Time= Sys.time()-start_time;
-  Sys_info=get_sys_details()
+  #Sys_info=get_sys_details()
   #########
   #browser()
   function_name=as.character(match.call()[1])
@@ -149,7 +151,7 @@ VONF_3D_GEOGIG_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000 ){
            Y=Y,
            Method="GIG_PG_RV Augmentation: function:VONF_3D_GEOGIG_DA_POSTERIOR",
            Run_Time=Run_Time,
-           System_info=Sys_info,
+           #System_info=Sys_info,
            call=match.call(),
            function_def=function_def
            )

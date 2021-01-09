@@ -194,7 +194,7 @@ All_DensityTerms_nu_log<-function(t,a,nu,j_nu_0,J_nuPlus1){
 ############################################################################
 
 
-
+#' @export
 log_f_nu<-function(t,a,nu,j_nu_0,J_nuPlus1,iflog=TRUE){
   K=length(j_nu_0);
   Terms=All_DensityTerms_nu_log(t,a,nu,j_nu_0,J_nuPlus1)

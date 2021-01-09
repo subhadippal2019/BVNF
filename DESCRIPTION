@@ -10,6 +10,7 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1
-Imports: gsl, Bessel, ghyp, Rfast, ggplot2, benchmarkme
+Imports: gsl, Bessel, ghyp, Rfast, ggplot2, benchmarkme, ggplot2,
+         plotly, grid, gridExtra, rayshader
 Suggests: 
     testthat

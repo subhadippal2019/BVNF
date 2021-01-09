@@ -1,15 +1,44 @@
 
+#' The functon is a implementation of the Slice sampling algorithm
+#' to conduct Bayesian inference of circular data.
+#'
+#' @param Y:  n X 3 matrix containing n directional data of dimension d.
+#' norm of each row of the matrix Y is 1.
+#' @param kappa_start: A positive number, starting value for the MCMC algorithm.
+#' If set NUll the Default procedure to get the initial value will be used.
+#' @param MCSamplerSize: Number of MCMC samples required to be generated.
+#' @return MCMC samples from for  mode and  concentration parameter of Vonmises distribution.
+#' @author S. Pal,  \email{subhadip.pal@louisville.edu}
+#' @references
+#' \itemize{
+#'
+#'  \item   [1] Damien, P., & Walker, S. (1999). A full Bayesian analysis of circular data
+#'   using the von Mises distribution.
+#'   The Canadian Journal of Statistics/La Revue Canadienne de Statistique, 291-298.
+#' }
+#' @examples
+#' library(Rfast)
+#' data = rvmf(n =10, mu=c(1,0,0),k = 10)
+#' lst_DW=VONF_2D_DW_SLICE(Y, MCSamplerSize=1000)
 
-
-
-
-Dir_data_inf_DW_slice<-function(data,MaxIter=100 ){
+#' @export
+VONF_2D_DW_SLICE<-function(Y,MCSamplerSize=100, kappa_start=NULL ){
+     data=Y
      start_Time =Sys.time()
-      ###############Data averages############################################
+     if(is.null(kappa_start)){(kappa_start=KAPPA_INITIAL(Y))}
+     if(is.character(kappa_start)){kappa_start=KAPPA_INITIAL(Y)}
+     #browser()
+      ###############Data averages#######################################################
         theta=data;
         n=nrow(theta);
         theta_bar=apply(theta,2, mean);
         nu=length(theta_bar)/2-1
+     ####################################################################################
+        data_dim=length(theta_bar);
+       if(data_dim!=2){
+             print("This function is only applicable to 2 dimensional (circular) Directional data. The data currently providedis not circular data. ");
+             return(NULL)
+         }
       ########################################################################
       ########################################################################
         mu_n=theta_bar/norm_vec(theta_bar)
@@ -23,7 +52,7 @@ Dir_data_inf_DW_slice<-function(data,MaxIter=100 ){
         x_all = log_v_all = w_all = kappa_all = mu_all = NULL
       #########################################################################
        #browser()
-      for(McLen in 1:MaxIter){
+      for(McLen in 1:MCSamplerSize){
           #### Sampling x #######################################
                   #print(paste0("nnn=",(n-1)*log(w)))
                   #if( (n-1)*log(w) < -100 ){x=0}
@@ -49,10 +78,10 @@ Dir_data_inf_DW_slice<-function(data,MaxIter=100 ){
           ########################################################################
                 # w<-runif(n = 1, min = x^(1/(n-1)),   max = M)
                   #print(x)
-                  w<-rTruncatedExp(n=1, rate = 1, lowerLim = x_pow_1_by_n_1, UpperLim = M)
+                  w<-rTruncatedExp(n=1, rate = 1, lowerLim = x_pow_1_by_n_1, upperLim = M)
           #########################################################################
           #########################################################################
-
+                    #browser()
                    seq_k           <- 1:100;
                    seq_lambda_k    <- generate_Lambda_Seq(seq_k, nu)
                        #u_k_upper_bound <- ifelse(seq_lambda_k>0, exp(-w*seq_lambda_k*kappa^(2*seq_k)), 1)
@@ -64,14 +93,14 @@ Dir_data_inf_DW_slice<-function(data,MaxIter=100 ){
                    kappa_lower     <- max(log_v/( R_n+R_n* inner_prod(mu,mu_n)  ), 0)
                           if(kappa_lower> kappa_upper){kappa_upper=kappa_lower+.00001}
                   #kappa<-rexptr(n = 1,lambda = R_n, range = c( kappa_lower, kappa_upper))
-                  kappa=rTruncatedExp(n = 1,rate=R_n,  lowerLim =kappa_lower, UpperLim =kappa_upper  )
+                  kappa=rTruncatedExp(n = 1,rate=R_n,  lowerLim =kappa_lower, upperLim =kappa_upper  )
 
 
 
                  #print(kappa)
            ##################################################################################################
            ############ Storing #############################################################################
-               x_all     = c(x_all,x);
+               x_all     = c(x_all,x_pow_1_by_n_1);
                log_v_all = c(log_v_all, log_v);
                w_all     = c(w_all, w);
                kappa_all = c(kappa_all, kappa)
@@ -79,9 +108,28 @@ Dir_data_inf_DW_slice<-function(data,MaxIter=100 ){
 
       }
         Run_Time= Sys.time()-start_Time
- MC=list(mu=mu_all, kappa=kappa_all, x=x_all, log_v=log_v_all, w=w_all )
- Vonf_MC=list(MC=MC, data=data, Run_Time=Run_Time, method="Damien Walker Slice Sampler")
- return(Vonf_MC)
+        #########
+        #browser()
+        function_name=as.character(match.call()[1])
+        function_def0<-  capture.output(print(get( function_name)))
+        function_def0[1]=paste0( function_name,"<-",function_def0[1])
+        function_def=paste( function_def0 , collapse = "\n")
+        #function_def1=dput(get(function_name))
+
+
+       lst=list(McSample_kappa=kappa_all,
+             McSample_mu=mu_all,
+             Y=Y,
+             x=x_all,
+             log_v=log_v_all,
+             w=w_all,
+             Method="Damien Walker Slice Sampler",
+             Run_Time=Run_Time,
+             call=match.call(),
+             function_def=function_def
+             )
+ #Vonf_MC=list(lst)
+ return(lst)
 }
 
 

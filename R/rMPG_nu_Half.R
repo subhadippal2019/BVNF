@@ -246,6 +246,8 @@ sample_truncated_gig_0<-function( alpha){
    return(x)
  }
 
+
+
  discreteTruckExp<-function(rate,lowerLim,UpperLim, prec_len=100){
          seq_rng=seq(lowerLim, UpperLim, length.out = prec_len)
          log_d_val= -seq_rng*rate
@@ -286,9 +288,15 @@ sample_truncated_gig_0<-function( alpha){
 
 
 #' Plots the density and the proposal density
-
+#' @examples
+#' plot_GIG_MPG_Proposal_h_densities(3)
+#' plot_GIG_MPG_Proposal_h_densities(5)
+#' @export
  plot_GIG_MPG_Proposal_h_densities<-function(alpha=5 , UpperLim=NULL, LowerLim=NULL){
    nu=.5
+
+
+
    f_mpg<-function(x){
      if(length(x)>1){
        return(apply(matrix(x, ncol=1), MARGIN = 1, function(y){log_f_nu(t=y, a=alpha, nu=nu, j_nu_0 = j_0, J_nuPlus1 = J_1, iflog = FALSE)}))

@@ -56,11 +56,10 @@ VONF_pD_MPG_INVCDF_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000,
     McSample_kappa[iter]=kappa;McSample_mu[,iter]=mu;
   } # End iter loop
   Run_Time=Sys.time()-Start_Time
-  Sys_info=get_sys_details()
+  #Sys_info=get_sys_details()
 
-  #browser()
-  #########
-  #browser()
+
+######################
   function_name=as.character(match.call()[1])
   function_def0<-  capture.output(print(get( function_name)));
   function_def0[1]=paste0( function_name,"<-",function_def0[1])
@@ -73,7 +72,7 @@ VONF_pD_MPG_INVCDF_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000,
            Y=Y,
            Method="PG Augmentation InversionOfCDS: function:VONF_pD_MPG_INVCDF_DA_POSTERIOR",
            Run_Time=Run_Time,
-           System_info=Sys_info,
+          # System_info=Sys_info,
            call=match.call(),
            function_def=function_def
            )
@@ -149,7 +148,7 @@ VONF_3D_MPG_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000, K=100)
     McSample_kappa[iter]=kappa;McSample_mu[,iter]=mu;
   } # End iter loop
   Run_Time=Sys.time()-Start_Time
-  Sys_info=get_sys_details()
+ # Sys_info=get_sys_details()
 
   #########
   #browser()
@@ -165,7 +164,7 @@ VONF_3D_MPG_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000, K=100)
     Y=Y,
     Method="PG Augmentation 3D_MPG_Sampler: function:VONF_3D_MPG_ES_DA_POSTERIOR",
     Run_Time=Run_Time,
-    System_info=Sys_info,
+    #System_info=Sys_info,
     function_def=function_def)
 
   return(lst)

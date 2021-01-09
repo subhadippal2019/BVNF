@@ -8,7 +8,7 @@
 VONF_3D_GEO_DA_POSTERIOR(Y, MCSamplerSize = 100, kappa_start = NULL)
 }
 \arguments{
-\item{Y:}{n \times 3 matrix containing n directional data of dimension d.
+\item{Y:}{n X 3 matrix containing n directional data of dimension d.
 norm of each row of the matrix Y is 1.}
 
 \item{kappa_start:}{A positive number, starting value for the MCMC algorithm.

@@ -9,3 +9,7 @@ plot_GIG_MPG_Proposal_h_densities(alpha = 5, UpperLim = NULL, LowerLim = NULL)
 \description{
 Plots the density and the proposal density
 }
+\examples{
+plot_GIG_MPG_Proposal_h_densities(3)
+plot_GIG_MPG_Proposal_h_densities(5)
+}
