@@ -12,6 +12,11 @@ comp_characteristic_function_alt(
   colr = c("white", "black")
 )
 }
+\arguments{
+\item{t=c(}{-20000:20000);}
+
+\item{nu=100}{}
+}
 \description{
 comp_characteristic_function_alt
 }
