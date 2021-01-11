@@ -40,9 +40,9 @@ ch_GIG<-function(m){
 
 #' comp_characteristic_function_alt
 #'
-#' @param t=c( -20000:20000);
-#' @param alpha=10;
-#' @param  nu=100
+#' @param t =c( -20000:20000);
+#' @param alpha =10;
+#' @param  nu =100
 #' @examples
 #' t=c( -20000:20000);  alpha=10; nu=100
 #' comp_characteristic_function_alt(t,fun = c("ch_GIG", "ch_MPG"), c("GIG ","MPG"), showBcGround=FALSE, colr = c("red","blue") )

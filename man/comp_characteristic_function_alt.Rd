@@ -13,9 +13,11 @@ comp_characteristic_function_alt(
 )
 }
 \arguments{
-\item{t=c(}{-20000:20000);}
+\item{t}{=c( -20000:20000);}
 
-\item{nu=100}{}
+\item{alpha}{=10;}
+
+\item{nu}{=100}
 }
 \description{
 comp_characteristic_function_alt

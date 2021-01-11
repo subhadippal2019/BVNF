@@ -6,6 +6,9 @@
 \usage{
 plot_Acf_violiin_Slice(data, MAXLAG = 15, scale_type = "width")
 }
+\arguments{
+\item{data}{:  A dataframe of size n*lag X number of different kappa seq.}
+}
 \description{
 plot_Acf_violiin_Slice
 }

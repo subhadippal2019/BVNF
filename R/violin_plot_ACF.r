@@ -2,6 +2,7 @@
 
 
 #' plot_Acf_violiin_Slice
+#' @param data :  A dataframe of size n*lag X number of different kappa seq.
 #' @examples
 #' data(ACF_Slice)
 #' plot_Acf_violiin_Slice(ACF_Slice)
