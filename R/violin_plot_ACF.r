@@ -37,10 +37,10 @@ dd=data
  #browser()
  #eval(parse( text=paste0("data$",var_names[1])))
   var_names=names(data)
-p <- ggplot(data, aes(factor(lag), kappa_1))
+p <- ggplot(data, aes(factor(lag), kappa_01))
 p <- p + geom_violin(aes(fill = "kappa=01"), alpha = 0.7, scale= scale_type)
 #q <- p + geom_violin(aes(y = val2, fill = "kappa=01"), alpha = 0.7,scale = scale_type)
-q<-p+  geom_violin(aes(y = kappa_5, fill = "kappa=05"), alpha = 0.7,scale =  scale_type)
+q<-p+  geom_violin(aes(y = kappa_05, fill = "kappa=05"), alpha = 0.7,scale =  scale_type)
 q<-q+  geom_violin(aes(y = kappa_10, fill = "kappa=10"), alpha = 0.7,scale =  scale_type)
 q<-q+  geom_violin(aes(y = kappa_15, fill = "kappa=15"), alpha = 0.7,scale =  scale_type)
 #q + scale_fill_brewer(palette="Dark2") + theme_minimal()
@@ -127,15 +127,18 @@ plot_Acf_violiin<-function(data, MAXLAG=15,scale_type="width",size=.5, Ylimit=NU
   #
   #browser()
   #eval(parse( text=paste0("data$",var_names[1])))
-  var_names=names(data)
+  var_names=names(data);
+  var_names1=gsub("kappa", "kappa=", var_names)
+  var_names1=gsub("dim_", "p=", var_names1)
+  var_names1=gsub("_", "", var_names1)
   n_var=length(var_names)
   p <- ggplot(data, aes(factor(get(var_names[1])), get(var_names[2])))
-  p <- p + geom_violin(aes(fill = var_names[2]), size=size,alpha = 0.9, scale= scale_type)
+  p <- p + geom_violin(aes(fill = var_names1[2]), size=size,alpha = 0.9, scale= scale_type)
 
 
    #browser()
   if(n_var>=3){
-   code_str=paste0("p<-p+geom_violin(aes(y =", (var_names[3:n_var]),", fill = '",var_names[3:n_var],"'),size=size, alpha = 0.7,scale =  scale_type)")
+   code_str=paste0("p<-p+geom_violin(aes(y =", (var_names[3:n_var]),", fill = '",var_names1[3:n_var],"'),size=size, alpha = 0.7,scale =  scale_type)")
    eval(parse(text=code_str))
    }
 
