@@ -102,10 +102,8 @@ VONF_pD_MPG_INVCDF_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000,
 #' library(Bessel)
 #' library(gsl)
 #' data=rvmf(n =10, mu=c(1,0,0),k = 10)
-#' MC_OBject=VONF_3D_MPG_ES_DA_POSTERIOR(Y=data, MCSamplerSize=50)
+#' MC_OBject=VONF_3D_MPG_DA_POSTERIOR(Y=data, MCSamplerSize=50)
 #' @export
-
-
 VONF_3D_MPG_DA_POSTERIOR<-function(Y,kappa_start=NULL,MCSamplerSize=5000, K=100){
   #K is the number of terms for  calculating CDF
   Start_Time=Sys.time()

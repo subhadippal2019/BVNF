@@ -67,7 +67,7 @@ dMPG<-function(x,alpha,nu,iflog=FALSE, Num_of_Terms=200){
 #########################
 
 
-
+#' @export
   AllTerms_CDF_log<-function(t,a,nu,j_nu_0,J_nuPlus1){
           #j_nu_0=bessel_zero_Jnu(nu,1:K)
            #J_nuPlus1=besselJ(j_nu_0,(nu+1));
@@ -98,6 +98,7 @@ dMPG<-function(x,alpha,nu,iflog=FALSE, Num_of_Terms=200){
   ##############################################
 
 
+#' @export
   log_survival_nu<-function(t,a,nu,j_nu_0,J_nuPlus1, iflog=TRUE){
            #log_survival=log(1-cdf)
     K=length(j_nu_0);
@@ -145,6 +146,9 @@ t_conv_log_CDF_plot<-function(t,a,nu,K,iflog=TRUE){
   Terms=AllTerms_CDF_log(t, a, nu,j_nu_0,J_nuPlus1);Max=max(Terms); Terms_adj=Terms-Max
   #browser()
    sign_of_Terms= sign(J_nuPlus1);
+         #sign_of_Terms1= (J_nuPlus1)/abs(J_nuPlus1);
+         #sign_of_Terms2=  (J_nuPlus1>0)*1
+
 
   cumSum=cumsum(exp(Terms_adj)*sign_of_Terms)
   cumavg1=(cumSum[2:K]+cumSum[1:(K-1)])/2
@@ -174,7 +178,7 @@ t_conv_log_CDF_plot<-function(t,a,nu,K,iflog=TRUE){
 
 
 
-
+#' @export
 All_DensityTerms_nu_log<-function(t,a,nu,j_nu_0,J_nuPlus1){
   #j_nu_0=bessel_zero_Jnu(nu,1:K)
   #J_nuPlus1=besselJ(j_nu_0,(nu+1));
@@ -224,6 +228,7 @@ log_f_nu<-function(t,a,nu,j_nu_0,J_nuPlus1,iflog=TRUE){
 ########################################
 #################NEWTON RAPHSON########
 ########################################
+#' @export
 t_start<-function(u,a,nu,j_nu_0_1,J_nuPlus1_1){
   #browser()
   #log(besselI(a,nu,TRUE))+a actually returns log(besselI(a,nu,FALSE))
@@ -241,9 +246,11 @@ t_start<-function(u,a,nu,j_nu_0_1,J_nuPlus1_1){
 ################################################################################
 ################################################################################
 
+#' @export
 PG_randomSample<-function(a,nu,K=200,j_nu_0=NULL, J_nuPlus1=NULL, eps_accuracy=.00001){
   #Generates a Sample from the appropriate distribution.
    #K=200;
+  #browser()
   Total_NR_steps=50;
   u=runif(1)
   val_iter=1;t=.01
@@ -260,6 +267,8 @@ PG_randomSample<-function(a,nu,K=200,j_nu_0=NULL, J_nuPlus1=NULL, eps_accuracy=.
   ############ starting point ###################
 
   t=t_start(u,a,nu,j_nu_0[1],J_nuPlus1[1])
+
+
   if(t==-Inf){t=.01}
   t=round(t,10)
   #print(paste("start=",t))
@@ -282,6 +291,82 @@ PG_randomSample<-function(a,nu,K=200,j_nu_0=NULL, J_nuPlus1=NULL, eps_accuracy=.
 ######################################################################################
 ######################################################################################
 
+#' @export
+PG_randomSample_alt<-function(a,nu,K=200,j_nu_0=NULL, J_nuPlus1=NULL, eps_accuracy=.00001, method=1){
+  #Generates a Sample from the appropriate distribution.
+  #K=200;
+  Total_NR_steps=50;
+  u=runif(1)
+  val_iter=1;t=.01
+  ################################################
+  if(is.null(j_nu_0)){
+    j_nu_0=bessel_zero_Jnu(nu,1:K);
+    J_nuPlus1=besselJ(j_nu_0,(nu+1));
+  }
+  if(is.null(J_nuPlus1)){
+    J_nuPlus1=besselJ(j_nu_0,(nu+1));
+  }
+
+  t_start_alt<-function(u, a, nu){
+    # a = kappa
+    val=ghyp::qgig(u, lambda = -(nu+1), chi = .5, psi = 2*a^2)
+    return(val)
+  }
+
+  log_survival_nu_local<-function(tt){ return(log_survival_nu(tt,a,nu,j_nu_0,J_nuPlus1)-log(1-u))}
+
+
+  ###############################################
+  ###############################################
+  ############ starting point ###################
+#browser()
+
+
+
+
+
+if(method==1){
+  u=runif(1)
+
+  t=t_start(u,a,nu,j_nu_0[1],J_nuPlus1[1])
+
+  val =uniroot(f = log_survival_nu_local, lower=0, upper=t )
+  return(val$root)
+}
+
+ # t1<-t_start_alt(u, a, nu)
+
+  if(method!=1){
+  #
+    u=runif(1)
+    t=t_start(u,a,nu,j_nu_0[1],J_nuPlus1[1])
+    t=round(t,10)
+    if(t==-Inf){t=.01}
+  #print(paste("start=",t))
+    #t=rgig(lambda = -(nu+1), chi = .5, psi = 2*a^2)
+    #u=ghyp::pgig(t, lambda = -(nu+1), chi = .5, psi = 2*a^2)
+
+
+
+  val_iter=1:Total_NR_steps-1;NR_steps=1;STOP_FLAG=1;
+  val_iter[1]=t
+  # browser()
+  while((NR_steps <= Total_NR_steps)*(STOP_FLAG)){
+    log_survival=log_survival_nu(t,a,nu,j_nu_0,J_nuPlus1)
+    t=t+( log_survival-log(1-u) )* exp( log_survival-log_f_nu(t,a,nu,j_nu_0,J_nuPlus1)   )
+    # t=round(t,10)
+    val_iter[NR_steps+1]=t
+    #print(t)
+    if( abs(t-val_iter[NR_steps])<eps_accuracy){STOP_FLAG=0}
+    NR_steps=NR_steps+1;
+  }
+  return(t)
+}
+  #t1
+  #val_iter
+  #t_start(u,a,nu,j_nu_0[1],J_nuPlus1[1])
+
+}
 
 
 

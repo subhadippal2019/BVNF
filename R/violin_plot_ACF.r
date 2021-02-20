@@ -86,6 +86,11 @@ CalculateTable_Slice<-function(df,lag_ind=5){
 
 
 
+
+
+
+
+
 #' plot_Acf_violiin_Slice
 #' @param data :  A dataframe of size n*lag X number of different kappa seq.
 #' @examples
@@ -158,6 +163,11 @@ plot_Acf_violiin<-function(data, MAXLAG=15,scale_type="width",size=.5, Ylimit=NU
   if(ifGray){p=p+scale_fill_grey(start = 1, end = 0)}
   return( plt=p)
 }
+
+
+
+
+
 
 
 

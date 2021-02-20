@@ -29,5 +29,5 @@ library(benchmarkme)
 library(Bessel)
 library(gsl)
 data=rvmf(n =10, mu=c(1,0,0),k = 10)
-MC_OBject=VONF_3D_MPG_ES_DA_POSTERIOR(Y=data, MCSamplerSize=50)
+MC_OBject=VONF_3D_MPG_DA_POSTERIOR(Y=data, MCSamplerSize=50)
 }
